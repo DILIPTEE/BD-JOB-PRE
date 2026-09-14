@@ -1,0 +1,30 @@
+{
+  "name": "bd-job-prep",
+  "version": "1.0.0",
+  "description": "Job preparation website for Bangladesh - Q&A, MCQ, written answers, IT questions for every job sector, with SEO & monetization tools and a full admin panel.",
+  "main": "server.js",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "seed": "node db/seed.js",
+    "dev": "node --watch server.js"
+  },
+  "keywords": [
+    "bd-job-prep",
+    "bangladesh",
+    "job-preparation",
+    "mcq",
+    "question-answer",
+    "seo-tools"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "better-sqlite3": "^12.2.0",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2",
+    "express-session": "^1.18.1"
+  }
+}

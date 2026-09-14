@@ -1,0 +1,3 @@
+[db] SQLite database → C:\Users\Acer\.cline\data\workspaces\chat\bd-job-prep\data\bdjob.db
+✔ BD Job Prep running at http://localhost:3000
+  Admin panel → http://localhost:3000/admin  (admin / admin123)

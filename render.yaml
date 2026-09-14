@@ -1,0 +1,35 @@
+# Render blueprint — deploy BD Job Prep with one click.
+# Dashboard → New → Blueprint → pick this repo; Render reads this file.
+#
+# WHY starter: Render's persistent disks are only available on PAID plans
+# (Starter+, ~$7/mo + ~$0.25/GB/mo for the 1 GB disk below). On the Free plan
+# there are no disks and every redeploy/restart WIPES the SQLite file — fine
+# for a quick demo, not for a live site. Details: README → "Deploy to Render".
+services:
+  - type: web
+    name: bd-job-prep
+    runtime: node
+    plan: starter
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      # Used for secure admin sessions. Render generates a random secret.
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: NODE_ENV
+        value: production
+      # Where the SQLite file lives — must point inside the persistent disk below.
+      # NOTE: if you switch plan to `free` (no disks), REMOVE this DB_PATH var —
+      # /var/data is not writable there. The app detects this, prints a warning
+      # and falls back to data/bdjob.db (ephemeral on Free).
+      - key: DB_PATH
+        value: /var/data/bdjob.db
+      # OPTIONAL (comment out if using the Dashboard instead of a custom domain):
+      # - key: BASE_URL
+      #   value: https://your-custom-domain.com
+    disk:
+      name: sqlite-data
+      mountPath: /var/data
+      sizeGB: 1
