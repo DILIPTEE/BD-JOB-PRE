@@ -1,0 +1,59 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+<%
+  const qp = [];
+  if (filters.type) qp.push('type=' + encodeURIComponent(filters.type));
+  if (filters.difficulty) qp.push('difficulty=' + encodeURIComponent(filters.difficulty));
+  if (filters.sort && filters.sort !== 'new') qp.push('sort=' + encodeURIComponent(filters.sort));
+  const qs = qp.join('&');
+%>
+<main>
+  <div class="page-banner cat-banner" style="--cat-color:<%= cat.color %>">
+    <div class="container">
+      <span class="cat-banner-icon"><%= cat.icon %></span>
+      <div>
+        <h1><%= cat.name %></h1>
+        <p><%= cat.description %></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container body-wrap">
+    <div class="content-col">
+      <form class="filter-bar" method="get" action="/category/<%= cat.slug %>">
+        <select name="type">
+          <option value="">All Types</option>
+          <option value="mcq" <%= filters.type === 'mcq' ? 'selected' : '' %>>MCQ</option>
+          <option value="written" <%= filters.type === 'written' ? 'selected' : '' %>>Written</option>
+        </select>
+        <select name="difficulty">
+          <option value="">Any Difficulty</option>
+          <option value="easy" <%= filters.difficulty === 'easy' ? 'selected' : '' %>>Easy</option>
+          <option value="medium" <%= filters.difficulty === 'medium' ? 'selected' : '' %>>Medium</option>
+          <option value="hard" <%= filters.difficulty === 'hard' ? 'selected' : '' %>>Hard</option>
+        </select>
+        <select name="sort">
+          <option value="new" <%= filters.sort === 'new' ? 'selected' : '' %>>Newest</option>
+          <option value="popular" <%= filters.sort === 'popular' ? 'selected' : '' %>>Most Viewed</option>
+        </select>
+        <button type="submit">Filter</button>
+        <a class="link-all" href="/questions?cat=<%= cat.slug %>">Open in all-questions view →</a>
+      </form>
+
+      <div class="result-count"><strong><%= total %></strong> questions in this sector</div>
+
+      <div class="card-grid">
+        <% if (items.length) { %>
+          <% items.forEach((item) => { %><%- include('partials/card', { item }) %><% }); %>
+        <% } else { %>
+          <p class="empty-state">No questions yet in this sector. Check back soon!</p>
+        <% } %>
+      </div>
+
+      <%- include('partials/pagination', { pg, basePath: '/category/' + cat.slug, qs }) %>
+    </div>
+
+    <%- include('partials/sidebar') %>
+  </div>
+</main>
+<%- include('partials/footer') %>

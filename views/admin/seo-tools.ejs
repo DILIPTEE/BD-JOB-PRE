@@ -1,0 +1,46 @@
+<%- include('partials/layout-top') %>
+
+<div class="panel-head-row">
+  <h2>🔍 SEO Tools — Competition Keyword Research</h2>
+</div>
+
+<p class="dim">Find <strong>high search volume, low competition</strong> keywords, estimate CPC and see which of your questions already target each phrase — then build monetizable content around them.</p>
+
+<div class="research-bar">
+  <input type="text" id="kwInput" placeholder="e.g. bank job math solution, pgcb assistant engineer question, sql query…" onkeydown="if(event.key==='Enter'){event.preventDefault();researchKeyword();}">
+  <button class="btn-primary" type="button" onclick="researchKeyword()">🔎 Research</button>
+</div>
+
+<div id="researchResult" class="hidden"></div>
+
+<h3 class="panel-title">📌 Tracked Keywords <span class="count-pill"><%= tracked.length %></span></h3>
+<div class="panel table-panel">
+  <table class="admin-table">
+    <thead><tr><th>Keyword</th><th>Volume/mo</th><th>Difficulty</th><th>CPC (US$)</th><th>Competition</th><th>Added</th><th>Action</th></tr></thead>
+    <tbody>
+      <% tracked.forEach((k) => { %>
+        <tr>
+          <td><strong><%= k.keyword %></strong></td>
+          <td><%= k.search_volume.toLocaleString() %></td>
+          <td><span class="diff-pill diff-<%= k.difficulty >= 70 ? 'high' : (k.difficulty >= 40 ? 'med' : 'low') %>"><%= k.difficulty %></span></td>
+          <td>$<%= Number(k.cpc).toFixed(2) %></td>
+          <td><span class="badge comp-<%= k.competition.toLowerCase() %>"><%= k.competition %></span></td>
+          <td><%= (k.created_at || '').slice(0, 10) %></td>
+          <td>
+            <button class="mini-btn danger" onclick="deleteTracked(<%= k.id %>)">✕</button>
+          </td>
+        </tr>
+      <% }); %>
+      <% if (!tracked.length) { %><tr><td colspan="7" class="empty-state">No tracked keywords yet.</td></tr><% } %>
+    </tbody>
+  </table>
+</div>
+
+<h3 class="panel-title">💡 How to use this for AdSense monetization</h3>
+<ul class="tips">
+  <li>Pick keywords with <strong>high volume + low difficulty</strong> (below ~40) to rank fast.</li>
+  <li>Create a question page for each tracked keyword; our auto-SEO tool writes the title, meta and keywords.</li>
+  <li>Add your Google AdSense code in <a href="/admin/settings">Settings → Monetization</a> to earn on those pages.</li>
+</ul>
+
+<%- include('partials/layout-foot') %>

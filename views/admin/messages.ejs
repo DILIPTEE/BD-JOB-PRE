@@ -1,0 +1,31 @@
+<%- include('partials/layout-top') %>
+
+<div class="panel-head-row">
+  <h2>✉️ Contact Messages <span class="count-pill"><%= items.length %></span></h2>
+</div>
+
+<div class="panel table-panel">
+  <table class="admin-table">
+    <thead><tr><th>Status</th><th>Name / Email</th><th>Subject</th><th>Message</th><th>Date</th><th>Actions</th></tr></thead>
+    <tbody>
+      <% items.forEach((m) => { %>
+        <tr class="<%= m.status === 'new' ? 'row-new' : '' %>">
+          <td><span class="badge <%= m.status === 'new' ? 'status-new' : 'status-live' %>"><%= m.status %></span></td>
+          <td><strong><%= m.name %></strong><br><span class="dim"><%= m.email %></span></td>
+          <td><%= m.subject %></td>
+          <td class="msg-cell"><%= m.message %></td>
+          <td><%= (m.created_at || '').slice(0, 10) %></td>
+          <td class="row-actions">
+            <% if (m.status === 'new') { %>
+              <form method="post" action="/admin/messages/<%= m.id %>/read" class="inline-form"><button class="mini-btn">✓ Read</button></form>
+            <% } %>
+            <form method="post" action="/admin/messages/<%= m.id %>/delete" class="inline-form" onsubmit="return confirm('Delete this message?')"><button class="mini-btn danger">Del</button></form>
+          </td>
+        </tr>
+      <% }); %>
+      <% if (!items.length) { %><tr><td colspan="6" class="empty-state">No messages yet.</td></tr><% } %>
+    </tbody>
+  </table>
+</div>
+
+<%- include('partials/layout-foot') %>

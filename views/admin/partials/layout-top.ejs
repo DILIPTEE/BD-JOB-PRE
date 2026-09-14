@@ -1,0 +1,21 @@
+<%- include('../../partials/head') %>
+<header class="admin-topbar">
+  <div class="container admin-topbar-inner">
+    <a class="admin-brand" href="/admin"><span class="brand-mark">📘</span> <%= site.site_name %><span class="admin-tag">ADMIN</span></a>
+    <nav class="admin-user">
+      <a href="/" target="_blank" rel="noopener">🌐 View site</a>
+      <a href="/admin/logout" class="danger-link">Logout</a>
+    </nav>
+  </div>
+</header>
+<div class="admin-layout container">
+  <aside class="admin-side">
+    <a class="admin-nav <%= active === 'dashboard' ? 'active' : '' %>" href="/admin">📊 Dashboard</a>
+    <a class="admin-nav <%= active === 'questions' ? 'active' : '' %>" href="/admin/questions">❓ Questions</a>
+    <a class="admin-nav <%= active === 'categories' ? 'active' : '' %>" href="/admin/categories">🗂️ Categories</a>
+    <a class="admin-nav <%= active === 'seo' ? 'active' : '' %>" href="/admin/seo">🔍 SEO & Keywords</a>
+    <a class="admin-nav <%= active === 'messages' ? 'active' : '' %>" href="/admin/messages">✉️ Messages</a>
+    <a class="admin-nav <%= active === 'settings' ? 'active' : '' %>" href="/admin/settings">⚙️ Settings</a>
+  </aside>
+  <main class="admin-main">
+    <% if (flash) { %><div class="alert success">✅ <%= flash %></div><% } %>

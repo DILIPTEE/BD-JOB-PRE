@@ -1,0 +1,22 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+<main>
+  <div class="page-banner"><div class="container"><h1>Privacy Policy</h1></div></div>
+  <div class="container body-wrap">
+    <div class="content-col">
+      <article class="read-card">
+        <p><em>Last updated: <%= new Date().getFullYear() %></em></p>
+        <h2>1. Information we collect</h2>
+        <p><%= site.site_name %> does not require registration. We may collect anonymous analytics data (page views) and, if you use the contact form, the name and email you provide.</p>
+        <h2>2. Cookies & advertising</h2>
+        <p>We may use cookies for basic functionality (e.g. admin session) and third-party advertising (e.g. Google AdSense). Ad partners may use cookies to serve relevant ads; you can opt out via your browser settings.</p>
+        <h2>3. How we use information</h2>
+        <p>Information is used only to improve content, respond to messages and measure traffic. We never sell personal data.</p>
+        <h2>4. Contact</h2>
+        <p>Questions about this policy? <a href="/contact">Contact us</a> at <%= site.contact_email %>.</p>
+      </article>
+    </div>
+    <%- include('partials/sidebar') %>
+  </div>
+</main>
+<%- include('partials/footer') %>

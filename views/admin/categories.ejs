@@ -1,0 +1,55 @@
+<%- include('partials/layout-top') %>
+
+<div class="panel-head-row">
+  <h2>Categories <span class="count-pill"><%= items.length %></span></h2>
+  <button class="btn-primary" type="button" onclick="document.getElementById('newCatForm').classList.toggle('hidden')">＋ Add Category</button>
+</div>
+
+<form class="form-stack admin-form hidden" id="newCatForm" method="post" action="/admin/categories">
+  <h3>New Category</h3>
+  <div class="form-grid-2">
+    <label>Name *<input type="text" name="name" required></label>
+    <label>Slug (auto if blank)<input type="text" name="slug" placeholder="e.g. railway"></label>
+    <label>Icon (emoji)<input type="text" name="icon" value="📘"></label>
+    <label>Color<input type="color" name="color" value="#2563eb"></label>
+  </div>
+  <label>Description<textarea name="description" rows="2"></textarea></label>
+  <label>SEO Title<input type="text" name="meta_title" placeholder="Category MCQ & Written Question Answer"></label>
+  <label>Meta Description<input type="text" name="meta_description" placeholder="Category question answer for Bangladesh job exams…"></label>
+  <button class="btn-primary" type="submit">Save Category</button>
+</form>
+
+<div class="cat-admin-grid">
+  <% items.forEach((c) => { %>
+    <div class="cat-admin-card">
+      <div class="cat-admin-head">
+        <span class="cat-icon" style="background:<%= c.color %>"><%= c.icon %></span>
+        <div>
+          <strong><%= c.name %></strong>
+          <span class="dim"><%= c.qcount %> question<%= c.qcount !== 1 ? 's' : '' %></span>
+        </div>
+      </div>
+      <form class="form-stack" method="post" action="/admin/categories/<%= c.id %>">
+        <label>Name<input type="text" name="name" value="<%= c.name %>" required></label>
+        <div class="form-grid-2">
+          <label>Slug<input type="text" name="slug" value="<%= c.slug %>"></label>
+          <label>Icon<input type="text" name="icon" value="<%= c.icon %>"></label>
+        </div>
+        <div class="form-grid-2">
+          <label>Color<input type="color" name="color" value="<%= c.color %>"></label>
+          <label>SEO Title<input type="text" name="meta_title" value="<%= c.meta_title %>"></label>
+        </div>
+        <label>Description<textarea name="description" rows="2"><%= c.description %></textarea></label>
+        <label>Meta Description<input type="text" name="meta_description" value="<%= c.meta_description %>"></label>
+        <div class="row-actions">
+          <button class="mini-btn" type="submit">💾 Save</button>
+          <form method="post" action="/admin/categories/<%= c.id %>/delete" class="inline-form" onsubmit="return confirm('Delete this category? Its questions are removed too.')">
+            <button class="mini-btn danger" type="submit">Delete</button>
+          </form>
+        </div>
+      </form>
+    </div>
+  <% }); %>
+</div>
+
+<%- include('partials/layout-foot') %>

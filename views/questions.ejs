@@ -1,0 +1,64 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+<%
+  const qp = [];
+  if (filters.q) qp.push('q=' + encodeURIComponent(filters.q));
+  if (filters.cat) qp.push('cat=' + encodeURIComponent(filters.cat));
+  if (filters.type) qp.push('type=' + encodeURIComponent(filters.type));
+  if (filters.difficulty) qp.push('difficulty=' + encodeURIComponent(filters.difficulty));
+  if (filters.sort && filters.sort !== 'new') qp.push('sort=' + encodeURIComponent(filters.sort));
+  const qs = qp.join('&');
+%>
+<main>
+  <div class="page-banner"><div class="container">
+    <h1>All Questions & Answers</h1>
+    <p>Browse <%= total %> solved MCQ & written questions across every Bangladeshi job sector.</p>
+  </div></div>
+
+  <div class="container body-wrap">
+    <div class="content-col">
+      <!-- Filter bar -->
+      <form class="filter-bar" method="get" action="/questions">
+        <input type="hidden" name="q" value="<%= filters.q %>">
+        <select name="cat">
+          <option value="">All Sectors</option>
+          <% categories.forEach((c) => { %>
+            <option value="<%= c.slug %>" <%= filters.cat === c.slug ? 'selected' : '' %>><%= c.name %></option>
+          <% }); %>
+        </select>
+        <select name="type">
+          <option value="">All Types</option>
+          <option value="mcq" <%= filters.type === 'mcq' ? 'selected' : '' %>>MCQ</option>
+          <option value="written" <%= filters.type === 'written' ? 'selected' : '' %>>Written</option>
+        </select>
+        <select name="difficulty">
+          <option value="">Any Difficulty</option>
+          <option value="easy" <%= filters.difficulty === 'easy' ? 'selected' : '' %>>Easy</option>
+          <option value="medium" <%= filters.difficulty === 'medium' ? 'selected' : '' %>>Medium</option>
+          <option value="hard" <%= filters.difficulty === 'hard' ? 'selected' : '' %>>Hard</option>
+        </select>
+        <select name="sort">
+          <option value="new" <%= filters.sort === 'new' ? 'selected' : '' %>>Newest</option>
+          <option value="popular" <%= filters.sort === 'popular' ? 'selected' : '' %>>Most Viewed</option>
+        </select>
+        <button type="submit">Filter</button>
+        <% if (qs) { %><a class="btn-clear" href="/questions">✕ Clear</a><% } %>
+      </form>
+
+      <div class="result-count">Showing <strong><%= items.length %></strong> of <strong><%= total %></strong> questions</div>
+
+      <div class="card-grid">
+        <% if (items.length) { %>
+          <% items.forEach((item) => { %><%- include('partials/card', { item }) %><% }); %>
+        <% } else { %>
+          <p class="empty-state">No questions found. Try adjusting the filters or search for something else.</p>
+        <% } %>
+      </div>
+
+      <%- include('partials/pagination', { pg, basePath: '/questions', qs }) %>
+    </div>
+
+    <%- include('partials/sidebar') %>
+  </div>
+</main>
+<%- include('partials/footer') %>

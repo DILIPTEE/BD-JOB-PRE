@@ -1,0 +1,77 @@
+<%- include('partials/layout-top') %>
+
+<div class="stat-grid">
+  <div class="stat-card"><span class="stat-icon">❓</span><strong><%= s.questions %></strong><span>Total Questions</span></div>
+  <div class="stat-card"><span class="stat-icon">🟢</span><strong><%= s.published %></strong><span>Published</span></div>
+  <div class="stat-card"><span class="stat-icon">✅</span><strong><%= s.mcq %></strong><span>MCQ</span></div>
+  <div class="stat-card"><span class="stat-icon">✍️</span><strong><%= s.written %></strong><span>Written</span></div>
+  <div class="stat-card"><span class="stat-icon">💻</span><strong><%= s.itQuestions %></strong><span>IT Questions</span></div>
+  <div class="stat-card"><span class="stat-icon">👁</span><strong><%= s.views %></strong><span>Total Views</span></div>
+  <div class="stat-card"><span class="stat-icon">🗂️</span><strong><%= s.categories %></strong><span>Categories</span></div>
+  <div class="stat-card"><span class="stat-icon">✉️</span><strong><%= newMessages %></strong><span>New Messages</span></div>
+</div>
+
+<div class="dash-grid">
+  <section class="panel">
+    <h3 class="panel-title">Questions per Sector</h3>
+    <div class="bar-chart">
+      <% byCat.forEach((r) => { %>
+        <div class="bar-row">
+          <span class="bar-label"><%= r.name %></span>
+          <div class="bar-track"><div class="bar-fill" style="width:<%= Math.round((r.n / maxCat) * 100) %>% ;background:<%= r.color %>"></div></div>
+          <span class="bar-value"><%= r.n %></span>
+        </div>
+      <% }); %>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h3 class="panel-title">Quick Actions</h3>
+    <div class="quick-actions">
+      <a class="qa-btn primary" href="/admin/questions/new">＋ Add Question</a>
+      <a class="qa-btn" href="/admin/questions">Manage Questions</a>
+      <a class="qa-btn" href="/admin/categories">Manage Categories</a>
+      <a class="qa-btn" href="/admin/seo">🔍 Keyword Research</a>
+      <a class="qa-btn" href="/admin/settings">⚙️ Monetization Settings</a>
+    </div>
+  </section>
+
+  <section class="panel wide">
+    <h3 class="panel-title">Recent Questions</h3>
+    <table class="admin-table">
+      <thead><tr><th>Title</th><th>Sector</th><th>Type</th><th>Views</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>
+        <% recent.forEach((r) => { %>
+          <tr>
+            <td><a href="/admin/questions/<%= r.id %>/edit"><%= r.title.slice(0, 60) %></a></td>
+            <td><%= r.category_name %></td>
+            <td><span class="badge type-badge <%= r.qtype %>"><%= r.qtype.toUpperCase() %></span></td>
+            <td><%= r.views %></td>
+            <td><span class="badge <%= r.published ? 'status-live' : 'status-draft' %>"><%= r.published ? 'Live' : 'Draft' %></span></td>
+            <td class="row-actions">
+              <a class="mini-btn" href="/question/<%= r.slug %>" target="_blank">View</a>
+              <a class="mini-btn" href="/admin/questions/<%= r.id %>/edit">Edit</a>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </section>
+
+  <section class="panel">
+    <h3 class="panel-title">Most Viewed</h3>
+    <ol class="rank-list">
+      <% topQuestions.forEach((t) => { %>
+        <li><a href="/question/<%= t.slug %>"><%= t.title.slice(0, 55) %></a> <span class="dim"><%= t.views %> 👁</span></li>
+      <% }); %>
+    </ol>
+  </section>
+
+  <section class="panel">
+    <h3 class="panel-title">Tracked Keywords: <%= totalKws %></h3>
+    <p class="dim">Use the SEO Tools page to research high-volume, low-competition keywords and track them here for your content plan.</p>
+    <a class="qa-btn" href="/admin/seo">Open Keyword Research →</a>
+  </section>
+</div>
+
+<%- include('partials/layout-foot') %>

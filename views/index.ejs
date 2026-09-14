@@ -1,0 +1,90 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+
+<main>
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <h1>Bangladesh Job Preparation — <span>MCQ, Written & IT Questions</span> with Answers</h1>
+      <p class="hero-sub">Practice solved question-answer for <strong>BUET & Engineering, Power sector (BPDB/PGCB/DPDC), Bank, BCS, IT, Education and every job sector in Bangladesh.</strong></p>
+      <form class="hero-search" action="/search" method="get">
+        <input type="search" name="q" placeholder="Search: bank job math, pgcb question, SQL, BCS MCQ…" aria-label="Search questions">
+        <button type="submit">Search Questions</button>
+      </form>
+      <div class="hero-stats">
+        <div class="stat"><strong><%= s.questions %></strong><span>Questions</span></div>
+        <div class="stat"><strong><%= s.categories %></strong><span>Sectors</span></div>
+        <div class="stat"><strong><%= s.itQuestions %></strong><span>IT Questions</span></div>
+        <div class="stat"><strong><%= (s.views / 1000).toFixed(1) %>k</strong><span>Total Views</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="container body-wrap">
+    <div class="content-col">
+      <!-- Category grid -->
+      <section class="block">
+        <h2 class="section-title">Explore Job Sectors 🧭</h2>
+        <div class="cat-grid">
+          <% categories.forEach((c) => { %>
+            <a class="cat-card" href="/category/<%= c.slug %>" style="--cat-color:<%= c.color %>">
+              <span class="cat-card-icon"><%= c.icon %></span>
+              <span class="cat-card-name"><%= c.name %></span>
+              <span class="cat-card-count"><%= c.question_count %> questions</span>
+              <span class="cat-card-link">Browse →</span>
+            </a>
+          <% }); %>
+        </div>
+      </section>
+
+      <!-- Featured -->
+      <section class="block">
+        <h2 class="section-title">⭐ Featured Questions</h2>
+        <div class="card-grid">
+          <% featured.forEach((item) => { %><%- include('partials/card', { item }) %><% }); %>
+        </div>
+      </section>
+
+      <% if (site.adsense_incontent && site.adsense_incontent.trim()) { %>
+      <div class="ad-slot in-content"><div class="ad-label">Advertisement</div><%- site.adsense_incontent %></div>
+      <% } else { %>
+      <div class="ad-slot in-content placeholder-ad">In-content Ad space – paste your AdSense unit in Admin → Settings</div>
+      <% } %>
+
+      <!-- Latest questions -->
+      <section class="block">
+        <div class="section-head">
+          <h2 class="section-title">🆕 Latest Questions & Answers</h2>
+          <a class="link-all" href="/questions?sort=new">View all →</a>
+        </div>
+        <div class="card-grid">
+          <% latest.forEach((item) => { %><%- include('partials/card', { item }) %><% }); %>
+        </div>
+      </section>
+
+      <!-- MCQ & Written -->
+      <section class="block split-blocks">
+        <div class="split-block">
+          <h2 class="section-title">✅ MCQ Practice</h2>
+          <ul class="plain-list">
+            <% mcqPick.forEach((item) => { %>
+              <li><a href="/question/<%= item.slug %>"><span class="badge type-badge mcq">MCQ</span> <%= item.title %></a></li>
+            <% }); %>
+          </ul>
+        </div>
+        <div class="split-block">
+          <h2 class="section-title">✍️ Written Practice</h2>
+          <ul class="plain-list">
+            <% writtenPick.forEach((item) => { %>
+              <li><a href="/question/<%= item.slug %>"><span class="badge type-badge written">WRITTEN</span> <%= item.title %></a></li>
+            <% }); %>
+          </ul>
+        </div>
+      </section>
+    </div>
+
+    <%- include('partials/sidebar') %>
+  </div>
+</main>
+
+<%- include('partials/footer') %>

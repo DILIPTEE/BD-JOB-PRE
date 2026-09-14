@@ -1,0 +1,68 @@
+<%- include('partials/layout-top') %>
+
+<div class="panel-head-row">
+  <h2>Manage Questions <span class="count-pill"><%= total %></span></h2>
+  <a class="btn-primary" href="/admin/questions/new">＋ Add Question</a>
+</div>
+
+<form class="filter-bar" method="get" action="/admin/questions">
+  <input type="search" name="q" value="<%= q %>" placeholder="Search title or tag…">
+  <select name="type">
+    <option value="">All Types</option>
+    <option value="mcq" <%= type === 'mcq' ? 'selected' : '' %>>MCQ</option>
+    <option value="written" <%= type === 'written' ? 'selected' : '' %>>Written</option>
+  </select>
+  <select name="cat">
+    <option value="">All Sectors</option>
+    <% categories.forEach((c) => { %>
+      <option value="<%= c.slug %>" <%= cat === c.slug ? 'selected' : '' %>><%= c.name %></option>
+    <% }); %>
+  </select>
+  <select name="published">
+    <option value="">Any Status</option>
+    <option value="1" <%= published === '1' ? 'selected' : '' %>>Live</option>
+    <option value="0" <%= published === '0' ? 'selected' : '' %>>Draft</option>
+  </select>
+  <button type="submit">Filter</button>
+</form>
+
+<div class="panel table-panel">
+  <table class="admin-table">
+    <thead><tr><th>ID</th><th>Title</th><th>Sector</th><th>Type</th><th>Views</th><th>Status</th><th style="width:210px">Actions</th></tr></thead>
+    <tbody>
+      <% if (items.length) { %>
+        <% items.forEach((it) => { %>
+          <tr>
+            <td><%= it.id %></td>
+            <td><a href="/admin/questions/<%= it.id %>/edit"><%= it.title.slice(0, 70) %></a></td>
+            <td><%= it.category_name %></td>
+            <td><span class="badge type-badge <%= it.qtype %>"><%= it.qtype.toUpperCase() %></span></td>
+            <td><%= it.views %></td>
+            <td>
+              <form method="post" action="/admin/questions/<%= it.id %>/toggle" class="inline-form">
+                <button class="badge <%= it.published ? 'status-live' : 'status-draft' %>" type="submit"><%= it.published ? 'Live' : 'Draft' %></button>
+              </form>
+            </td>
+            <td class="row-actions">
+              <a class="mini-btn" href="/question/<%= it.slug %>" target="_blank">View</a>
+              <a class="mini-btn" href="/admin/questions/<%= it.id %>/edit">Edit</a>
+              <form method="post" action="/admin/questions/<%= it.id %>/delete" class="inline-form" onsubmit="return confirm('Delete this question?')">
+                <button class="mini-btn danger" type="submit">Del</button>
+              </form>
+            </td>
+          </tr>
+        <% }); %>
+      <% } else { %>
+        <tr><td colspan="7" class="empty-state">No questions found.</td></tr>
+      <% } %>
+    </tbody>
+  </table>
+</div>
+
+<div class="pagination">
+  <% for (let i = 1; i <= pages; i++) { %>
+    <a class="pg-btn <%= i === page ? 'active' : '' %>" href="/admin/questions?q=<%= q %>&type=<%= type %>&cat=<%= cat %>&published=<%= published %>&page=<%= i %>"><%= i %></a>
+  <% } %>
+</div>
+
+<%- include('partials/layout-foot') %>

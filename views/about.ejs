@@ -1,0 +1,30 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+<main>
+  <div class="page-banner"><div class="container"><h1>About <%= site.site_name %></h1></div></div>
+  <div class="container body-wrap">
+    <div class="content-col">
+      <article class="read-card">
+        <p><strong><%= site.site_name %></strong> is a free job preparation website for Bangladeshi students and job seekers. We collect, solve and publish <strong>MCQ and written exam questions with answers</strong> for every job sector in Bangladesh.</p>
+        <h2>What we cover</h2>
+        <ul>
+          <li>🏦 <strong>Bank jobs</strong> – Bangladesh Bank, Sonali, Agrani, Janata, Pubali, private & foreign banks.</li>
+          <li>🏛️ <strong>BCS & government jobs</strong> – BCS preliminary & written, PSC, ministries.</li>
+          <li>⚡ <strong>Power sector</strong> – BPDB, PGCB, DPDC, WZPDCL, DESCO, REB.</li>
+          <li>🏗️ <strong>Engineering & BUET</strong> – BUET/CUET/RUET/KUET admission and engineering exams.</li>
+          <li>💻 <strong>IT & software jobs</strong> – programming, networking, database, web.</li>
+          <li>🍎 <strong>Education</strong>, 🤝 <strong>NGO & private</strong>, 🏥 <strong>Medical</strong> and more.</li>
+        </ul>
+        <h2>Why us</h2>
+        <ul>
+          <li>Clean, mobile-friendly reading for questions & answers.</li>
+          <li>Every question solved with explanation — no clickbait.</li>
+          <li>SEO-friendly pages so students can find you and you can monetize with ads.</li>
+        </ul>
+        <p>Have a question or a correction? <a href="/contact">Contact us</a>.</p>
+      </article>
+    </div>
+    <%- include('partials/sidebar') %>
+  </div>
+</main>
+<%- include('partials/footer') %>

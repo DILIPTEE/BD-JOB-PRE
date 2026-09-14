@@ -1,0 +1,16 @@
+<%- include('../partials/head') %>
+<main class="admin-login-wrap">
+  <form class="admin-login-card" action="/admin/login" method="post">
+    <input type="hidden" name="next" value="<%= next %>">
+    <div class="admin-login-logo">📘</div>
+    <h1>Admin Login</h1>
+    <p class="dim"><%= site.site_name %> control panel</p>
+    <% if (error) { %><div class="alert danger"><%= error %></div><% } %>
+    <label>Username<input type="text" name="username" value="admin" autocomplete="username" required></label>
+    <label>Password<input type="password" name="password" autocomplete="current-password" required></label>
+    <button class="btn-primary btn-block" type="submit">Sign In</button>
+    <a class="back-site" href="/">← Back to website</a>
+  </form>
+</main>
+</body>
+</html>

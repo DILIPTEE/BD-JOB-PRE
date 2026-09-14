@@ -1,0 +1,61 @@
+<aside class="sidebar">
+  <!-- Recent IT questions widget (every sector) -->
+  <div class="widget">
+    <h3 class="widget-title">🆕 Recent IT Questions</h3>
+    <ul class="side-list">
+      <% recentIt.forEach((q) => { %>
+        <li>
+          <a href="/question/<%= q.slug %>">
+            <span class="side-item-title"><%= q.title %></span>
+            <span class="side-item-meta">
+              <span class="badge" style="background:<%= q.category_color %>"><%= q.category_name %></span>
+              <span class="dim"><%= q.qtype.toUpperCase() %></span>
+            </span>
+          </a>
+        </li>
+      <% }); %>
+    </ul>
+    <a class="link-all" href="/questions?sort=new">View all questions →</a>
+  </div>
+
+  <!-- Popular categories -->
+  <div class="widget">
+    <h3 class="widget-title">🗂️ Job Sectors</h3>
+    <ul class="cat-list">
+      <% categories.forEach((c) => { %>
+        <li>
+          <a href="/category/<%= c.slug %>">
+            <span class="cat-icon" style="background:<%= c.color %>"><%= c.icon %></span>
+            <span><%= c.name %></span>
+            <span class="cat-count"><%= c.question_count %></span>
+          </a>
+        </li>
+      <% }); %>
+    </ul>
+  </div>
+
+  <% if (site.adsense_sidebar && site.adsense_sidebar.trim()) { %>
+  <div class="widget ad-widget"><div class="ad-label">Advertisement</div><%- site.adsense_sidebar %></div>
+  <% } else { %>
+  <div class="widget ad-widget placeholder-ad">Ad space – paste your AdSense unit in Admin → Settings</div>
+  <% } %>
+
+  <!-- Popular tags -->
+  <div class="widget">
+    <h3 class="widget-title">🏷️ Popular Tags</h3>
+    <div class="tag-cloud">
+      <% ['it','bank','bcs','power','engineering','gk','written','mcq','networking','database'].forEach((t) => { %>
+        <a class="tag-chip" href="/tags/<%= t %>">#<%= t %></a>
+      <% }); %>
+    </div>
+  </div>
+
+  <!-- Social links -->
+  <div class="widget">
+    <h3 class="widget-title">🌐 Follow Us</h3>
+    <div class="social-row">
+      <a class="social-btn" href="<%= site.facebook %>" target="_blank" rel="noopener">f</a>
+      <a class="social-btn" href="<%= site.youtube %>" target="_blank" rel="noopener">▶</a>
+    </div>
+  </div>
+</aside>

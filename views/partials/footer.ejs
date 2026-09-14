@@ -1,0 +1,41 @@
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-col">
+      <h4>📘 <%= site.site_name %></h4>
+      <p><%= site.footer_text %></p>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/questions">All Questions</a></li>
+        <li><a href="/about">About</a></li>
+        <li><a href="/privacy">Privacy Policy</a></li>
+        <li><a href="/contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Job Sectors</h4>
+      <ul>
+        <% categories.slice(0, 7).forEach((c) => { %>
+          <li><a href="/category/<%= c.slug %>"><%= c.name %></a></li>
+        <% }); %>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Exam Prep</h4>
+      <ul>
+        <li><a href="/tags/bank">Bank Job MCQ</a></li>
+        <li><a href="/tags/bcs">BCS Questions</a></li>
+        <li><a href="/tags/power">Power Sector</a></li>
+        <li><a href="/tags/it">IT Questions</a></li>
+        <li><a href="/tags/written">Written Answers</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom container">
+    <span>© <%= new Date().getFullYear() %> <%= site.site_name %>. All rights reserved.</span>
+    <span>Admin: <a href="/admin"><%= admin ? 'Dashboard' : 'Login' %></a></span>
+  </div>
+</footer>
+<script src="/js/main.js"></script>

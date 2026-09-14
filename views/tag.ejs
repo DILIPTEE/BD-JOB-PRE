@@ -1,0 +1,22 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+<main>
+  <div class="page-banner"><div class="container">
+    <h1>#<%= tag %> Questions</h1>
+    <p><%= total %> question<%= total !== 1 ? 's' : '' %> tagged with #<%= tag %>, solved with answers.</p>
+  </div></div>
+  <div class="container body-wrap">
+    <div class="content-col">
+      <div class="card-grid">
+        <% if (items.length) { %>
+          <% items.forEach((item) => { %><%- include('partials/card', { item }) %><% }); %>
+        <% } else { %>
+          <p class="empty-state">No questions found with this tag.</p>
+        <% } %>
+      </div>
+      <%- include('partials/pagination', { pg, basePath: '/tags/' + tag, qs: '' }) %>
+    </div>
+    <%- include('partials/sidebar') %>
+  </div>
+</main>
+<%- include('partials/footer') %>

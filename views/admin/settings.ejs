@@ -1,0 +1,47 @@
+<%- include('partials/layout-top') %>
+
+<div class="panel-head-row">
+  <h2>⚙️ Site Settings & Monetization</h2>
+</div>
+
+<% if (typeof pwdError !== 'undefined' && pwdError) { %><div class="alert danger"><%= pwdError %></div><% } %>
+
+<form class="form-stack admin-form" method="post" action="/admin/settings">
+  <h3>General</h3>
+  <div class="form-grid-2">
+    <label>Site Name<input type="text" name="site_name" value="<%= settings.site_name %>"></label>
+    <label>Base URL<input type="text" name="base_url" value="<%= settings.base_url %>" placeholder="https://yourdomain.com"></label>
+  </div>
+  <label>Tagline / Meta description<input type="text" name="tagline" value="<%= settings.tagline %>"></label>
+  <label>Meta Keywords<input type="text" name="meta_keywords" value="<%= settings.meta_keywords %>"></label>
+  <label>Footer Text<textarea name="footer_text" rows="2"><%= settings.footer_text %></textarea></label>
+  <label>Contact Email<input type="email" name="contact_email" value="<%= settings.contact_email %>"></label>
+  <div class="form-grid-2">
+    <label>Facebook URL<input type="text" name="facebook" value="<%= settings.facebook %>"></label>
+    <label>YouTube URL<input type="text" name="youtube" value="<%= settings.youtube %>"></label>
+  </div>
+
+  <h3>💰 Monetization (AdSense)</h3>
+  <p class="dim">Paste your Google AdSense code here. It is rendered on the site automatically. Leave blank to show placeholder boxes.</p>
+  <label>Header Ad (ads.txt / script)<textarea name="adsense_header" rows="3"><%= settings.adsense_header %></textarea></label>
+  <label>In-content Ad<textarea name="adsense_incontent" rows="3"><%= settings.adsense_incontent %></textarea></label>
+  <label>Sidebar Ad<textarea name="adsense_sidebar" rows="3"><%= settings.adsense_sidebar %></textarea></label>
+
+  <h3>📈 Analytics</h3>
+  <label>Google Analytics ID (G-XXXXXXX)<input type="text" name="analytics_id" value="<%= settings.analytics_id %>"></label>
+
+  <button class="btn-primary" type="submit">💾 Save Settings</button>
+</form>
+
+<div class="panel">
+  <h3 class="panel-title">🔒 Change Password</h3>
+  <form class="form-stack admin-form" method="post" action="/admin/password">
+    <div class="form-grid-2">
+      <label>Current Password<input type="password" name="current" required></label>
+      <label>New Password (min 6 chars)<input type="password" name="next" minlength="6" required></label>
+    </div>
+    <button class="btn-primary" type="submit">Update Password</button>
+  </form>
+</div>
+
+<%- include('partials/layout-foot') %>

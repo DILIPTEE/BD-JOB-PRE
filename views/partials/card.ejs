@@ -1,0 +1,18 @@
+<article class="q-card">
+  <a class="q-card-link" href="/question/<%= item.slug %>">
+    <div class="q-card-top">
+      <span class="badge" style="background:<%= item.category_color %>"><%= item.category_icon %> <%= item.category_name %></span>
+      <span class="badge type-badge <%= item.qtype %>"><%= item.qtype.toUpperCase() %></span>
+      <span class="badge diff-badge <%= item.difficulty %>"><%= item.difficulty %></span>
+      <% if (item.exam) { %><span class="exam-chip">📝 <%= item.exam %></span><% } %>
+    </div>
+    <h3 class="q-card-title"><%= item.title %></h3>
+    <p class="q-card-excerpt"><%= (item.question_text || '').replace(/\s+/g, ' ').slice(0, 160) %><%= (item.question_text || '').length > 160 ? '…' : '' %></p>
+    <div class="q-card-meta">
+      <span>👁 <%= item.views %> views</span>
+      <span>📅 <%= item.created %></span>
+      <% (item.tags || []).slice(0, 3).forEach((t) => { %><span class="tag-chip">#<%= t %></span><% }); %>
+      <span class="read-more">Solve now →</span>
+    </div>
+  </a>
+</article>

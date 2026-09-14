@@ -1,0 +1,76 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+<main>
+  <div class="container body-wrap">
+    <div class="content-col">
+      <nav class="breadcrumb"><a href="/">Home</a> › <a href="/category/<%= q.category_slug %>"><%= q.category_name %></a> › Question</nav>
+
+      <article class="read-card">
+        <div class="q-card-top">
+          <span class="badge" style="background:<%= q.category_color %>"><%= q.category_icon %> <%= q.category_name %></span>
+          <span class="badge type-badge <%= q.qtype %>"><%= q.qtype.toUpperCase() %></span>
+          <span class="badge diff-badge <%= q.difficulty %>"><%= q.difficulty %></span>
+          <% if (q.exam) { %><span class="exam-chip">📝 <%= q.exam %></span><% } %>
+        </div>
+
+        <h1 class="read-title"><%= q.title %></h1>
+        <div class="read-meta">
+          <span>👁 <%= q.views %> views</span>
+          <span>📅 <%= q.created %></span>
+          <span class="share-btns">
+            <button class="mini-btn" data-copy-target="#answerText" id="copyAnswerBtn">📋 Copy Answer</button>
+            <button class="mini-btn" id="printBtn">🖨️ Print</button>
+          </span>
+        </div>
+
+        <div class="read-question">
+          <h2>Question</h2>
+          <p><%= q.question_text %></p>
+        </div>
+
+        <% if (q.qtype === 'mcq' && q.options && q.options.length) { %>
+          <div class="options">
+            <h2>Options</h2>
+            <% q.options.forEach((opt, i) => {
+                 const letter = String.fromCharCode(65 + i);
+                 const isCorrect = q.correct_answer && q.correct_answer.toUpperCase() === letter;
+            %>
+              <div class="option <%= isCorrect ? 'correct' : '' %>">
+                <span class="opt-letter <%= isCorrect ? 'correct' : '' %>"><%= letter %></span>
+                <span class="opt-text"><%= opt %></span>
+                <% if (isCorrect) { %><span class="opt-correct-tag">✓ Correct</span><% } %>
+              </div>
+            <% }); %>
+          </div>
+        <% } %>
+
+        <div class="answer-box" id="answerText">
+          <h2><% if (q.qtype === 'mcq') { %>✅ Correct Answer: <%= q.correct_answer %><% } else { %>✍️ Model Answer<% } %></h2>
+          <div class="answer-body"><%- renderAnswer(q.answer_text) %></div>
+        </div>
+
+        <% if ((q.tags || []).length) { %>
+          <div class="read-tags">
+            <% q.tags.forEach((t) => { %><a class="tag-chip" href="/tags/<%= t %>">#<%= t %></a><% }); %>
+          </div>
+        <% } %>
+      </article>
+
+      <% if (site.adsense_incontent && site.adsense_incontent.trim()) { %>
+      <div class="ad-slot in-content"><div class="ad-label">Advertisement</div><%- site.adsense_incontent %></div>
+      <% } %>
+
+      <% if (related && related.length) { %>
+        <section class="block">
+          <h2 class="section-title">🧩 Related Questions</h2>
+          <div class="card-grid">
+            <% related.forEach((item) => { %><%- include('partials/card', { item }) %><% }); %>
+          </div>
+        </section>
+      <% } %>
+    </div>
+
+    <%- include('partials/sidebar') %>
+  </div>
+</main>
+<%- include('partials/footer') %>

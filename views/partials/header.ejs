@@ -1,0 +1,21 @@
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="/">
+      <span class="brand-mark">📘</span>
+      <span class="brand-text"><%= site.site_name %><small><%= site.tagline.split('–')[0] || 'Job Preparation' %></small></span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="Main navigation">
+      <a href="/" class="<%= path === '/' ? 'active' : '' %>">Home</a>
+      <a href="/questions" class="<%= path.startsWith('/questions') ? 'active' : '' %>">All Questions</a>
+      <a href="/category/it" class="<%= path.includes('/category/it') ? 'active' : '' %>">💻 IT Questions</a>
+      <a href="/about" class="<%= path === '/about' ? 'active' : '' %>">About</a>
+      <a href="/contact" class="<%= path === '/contact' ? 'active' : '' %>">Contact</a>
+      <% if (admin) { %><a href="/admin" class="nav-admin">Admin ▸</a><% } %>
+    </nav>
+    <form class="header-search" action="/search" method="get" role="search">
+      <input type="search" name="q" placeholder="Search question, exam, tag…" value="<%= query.q || '' %>" aria-label="Search questions">
+      <button type="submit" aria-label="Search">🔍</button>
+    </form>
+    <button class="menu-toggle" id="menuToggle" aria-label="Toggle menu" aria-expanded="false">☰</button>
+  </div>
+</header>

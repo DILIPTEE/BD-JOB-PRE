@@ -1,0 +1,22 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+<main>
+  <div class="page-banner"><div class="container"><h1>Contact Us</h1></div></div>
+  <div class="container body-wrap">
+    <div class="content-col">
+      <% if (flash) { %><div class="alert success"><%= flash %></div><% } %>
+      <article class="read-card">
+        <p>Have a question, a correction, a request for a specific exam question, or want to advertise? Send us a message.</p>
+        <form class="form-stack" action="/contact" method="post">
+          <label>Your Name<input type="text" name="name" required></label>
+          <label>Email<input type="email" name="email" required></label>
+          <label>Subject<input type="text" name="subject" required></label>
+          <label>Message<textarea name="message" rows="6" required></textarea></label>
+          <button class="btn-primary" type="submit">Send Message</button>
+        </form>
+      </article>
+    </div>
+    <%- include('partials/sidebar') %>
+  </div>
+</main>
+<%- include('partials/footer') %>

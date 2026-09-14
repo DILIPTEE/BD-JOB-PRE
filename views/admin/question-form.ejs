@@ -1,0 +1,131 @@
+<%- include('partials/layout-top') %>
+
+<div class="panel-head-row">
+  <h2><%= isEdit ? 'Edit Question' : 'Add Question' %></h2>
+  <a class="qa-btn" href="/admin/questions">← Back to list</a>
+</div>
+
+<form class="form-stack admin-form" method="post" action="<%= isEdit ? '/admin/questions/' + q.id : '/admin/questions' %>">
+  <div class="form-grid-2">
+    <label>Question Title *
+      <input type="text" name="title" id="qTitle" value="<%= q.title %>" required>
+    </label>
+    <label>Category *
+      <select name="category_id" required>
+        <% categories.forEach((c) => { %>
+          <option value="<%= c.id %>" <%= q.category_id == c.id ? 'selected' : '' %>><%= c.name %></option>
+        <% }); %>
+      </select>
+    </label>
+  </div>
+
+  <div class="form-grid-3">
+    <label>Type *
+      <select name="qtype" id="qtype">
+        <option value="mcq" <%= q.qtype === 'mcq' ? 'selected' : '' %>>MCQ</option>
+        <option value="written" <%= q.qtype === 'written' ? 'selected' : '' %>>Written</option>
+      </select>
+    </label>
+    <label>Difficulty
+      <select name="difficulty">
+        <% ['easy', 'medium', 'hard'].forEach((d) => { %>
+          <option value="<%= d %>" <%= q.difficulty === d ? 'selected' : '' %>><%= d %></option>
+        <% }); %>
+      </select>
+    </label>
+    <label>Exam / Post (e.g. BPDB AE, BCS-43)
+      <input type="text" name="exam" value="<%= q.exam %>">
+    </label>
+  </div>
+
+  <label>Question Text * (shown to students)
+    <textarea name="question_text" id="qText" rows="3" required><%= q.question_text %></textarea>
+  </label>
+
+  <div id="optionsWrap" class="<%= q.qtype === 'mcq' ? '' : 'hidden' %>">
+    <p class="label-text">MCQ Options (A–D)</p>
+    <div class="form-grid-2">
+      <% ['A', 'B', 'C', 'D'].forEach((L, i) => { %>
+        <label><%= L %>. <input type="text" name="option" value="<%= (q.options && q.options[i]) || '' %>" placeholder="Option <%= L %>"></label>
+      <% }); %>
+    </div>
+    <label>Correct Option (A/B/C/D)
+      <input type="text" name="correct_answer" value="<%= q.correct_answer %>" placeholder="e.g. B">
+    </label>
+  </div>
+
+  <div class="rich-field">
+    <span class="label-text">Answer / Solution * <span class="dim">(rich text composer — tables &amp; lists supported)</span></span>
+    <div class="rich-editor" id="answerEditorWrap">
+      <div class="editor-toolbar" id="answerToolbar" role="toolbar" aria-label="Formatting toolbar">
+        <button type="button" data-cmd="bold" title="Bold"><b>B</b></button>
+        <button type="button" data-cmd="italic" title="Italic"><i>I</i></button>
+        <button type="button" data-cmd="underline" title="Underline"><u>U</u></button>
+        <span class="tb-sep"></span>
+        <button type="button" data-cmd="h2" title="Heading">H2</button>
+        <button type="button" data-cmd="h3" title="Subheading">H3</button>
+        <span class="tb-sep"></span>
+        <button type="button" data-cmd="insertUnorderedList" title="Bullet list">•≡</button>
+        <button type="button" data-cmd="insertOrderedList" title="Numbered list">1≡</button>
+        <span class="tb-sep"></span>
+        <button type="button" data-cmd="table" title="Insert table">▦</button>
+        <button type="button" data-cmd="link" title="Insert link">🔗</button>
+        <button type="button" data-cmd="formatBlock" data-value="blockquote" title="Quote">❝</button>
+        <button type="button" data-cmd="code" title="Code">⟨/⟩</button>
+        <span class="tb-sep"></span>
+        <button type="button" data-cmd="removeFormat" title="Clear formatting">⌫</button>
+        <button type="button" data-cmd="source" title="HTML source">⟨HTML⟩</button>
+      </div>
+      <div class="editor-area" contenteditable="true" id="answerEditor"></div>
+      <textarea class="editor-source" id="answerSource" spellcheck="false" placeholder="Raw HTML"></textarea>
+    </div>
+    <textarea name="answer_text" id="answerTextHidden" class="hidden"></textarea>
+    <small class="dim">Format with the toolbar. Use <b>▦ Table</b> for tabular answers and <b>H2/H3</b> headings for article-style answers — students see them in a clean standard layout.</small>
+  </div>
+
+  <div class="form-grid-2">
+    <label>Tags (comma separated)
+      <input type="text" name="tags" value="<%= (q.tags || []).join(', ') %>" placeholder="bank, it, written">
+    </label>
+    <label>Source
+      <input type="text" name="source" value="<%= q.source %>" placeholder="optional">
+    </label>
+  </div>
+
+  <label>Slug (URL) — leave blank to auto-generate
+    <input type="text" name="slug" value="<%= q.slug %>">
+  </label>
+
+  <div class="check-row">
+    <label class="check"><input type="checkbox" name="published" <%= q.published ? 'checked' : '' %>> Publish (visible to visitors)</label>
+    <label class="check"><input type="checkbox" name="featured" <%= q.featured ? 'checked' : '' %>> ⭐ Feature on homepage</label>
+  </div>
+
+  <button class="btn-primary" type="submit">💾 Save Question</button>
+</form>
+
+<!-- SEO suggestion panel -->
+<div class="seo-panel">
+  <div class="panel-head-row">
+    <h3>✨ SEO Auto-Suggest <small class="dim">(title, meta description & keywords for Google ranking & AdSense)</small></h3>
+    <button class="btn-primary" type="button" id="seoSuggestBtn">✨ Generate Suggestions</button>
+  </div>
+  <p class="dim" id="seoStatus">Fill in the title and question text above, then click Generate. Suggested SEO title & keywords will be filled below automatically.</p>
+  <div class="seo-results hidden" id="seoResults">
+    <p class="label-text">Recommended SEO title (click a title to use it):</p>
+    <div class="title-chips" id="titleChips"></div>
+    <div class="form-stack">
+      <label>SEO Title
+        <input type="text" name="seo_title" id="seoTitle" value="<%= q.seo_title %>">
+      </label>
+      <label>Meta Description (max ~160 chars)
+        <textarea name="meta_description" id="metaDesc" rows="2" maxlength="170"><%= q.meta_description %></textarea>
+      </label>
+      <label>Keywords (comma separated)
+        <input type="text" name="keywords" id="seoKeywords" value="<%= q.keywords %>">
+      </label>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/layout-foot') %>

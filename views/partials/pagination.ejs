@@ -1,0 +1,11 @@
+<% if (pg && pg.pages > 1) { %>
+<nav class="pagination" aria-label="Pagination">
+  <% if (pg.page > 1) { %><a class="pg-btn" href="<%= basePath %>?<%= qs %><%= qs ? '&' : '' %>page=<%= pg.page - 1 %>">‹ Prev</a><% } %>
+  <% pg.nums.forEach((n) => { %>
+    <% if (n === '…') { %><span class="pg-gap">…</span><% } else { %>
+      <a class="pg-btn <%= n === pg.page ? 'active' : '' %>" href="<%= basePath %>?<%= qs %><%= qs ? '&' : '' %>page=<%= n %>"><%= n %></a>
+    <% } %>
+  <% }); %>
+  <% if (pg.page < pg.pages) { %><a class="pg-btn" href="<%= basePath %>?<%= qs %><%= qs ? '&' : '' %>page=<%= pg.page + 1 %>">Next ›</a><% } %>
+</nav>
+<% } %>
