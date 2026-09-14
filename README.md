@@ -77,31 +77,6 @@ Data is stored in `data/bdjob.db` (SQLite — no separate database server needed
 4. Publish. Google ranks it, students visit, and your **AdSense** code (Admin → Settings → Monetization)
    earns you money on those pages.
 
-## 🚢 Deploy to Render (quick)
 
-### Free plan (testing)
-1. Push this folder to GitHub, then Render → **New → Web Service** → pick the repo.
-2. Runtime `Node` · Build Command `npm install` · Start Command `node server.js` · Plan `Free`.
-3. Environment variables: `SESSION_SECRET` (a long random string) and `NODE_ENV=production`.
-   ⚠️ **Do NOT set `DB_PATH` and do NOT add a Disk on Free** — free services have no
-   disk, so `/var/data` is not writable. The app automatically stores its DB in
-   `data/` instead (it even survives if `DB_PATH` was left set: it prints a warning
-   and falls back).
-4. Health Check Path: `/api/health` → **Create Web Service**.
-
-Free limitations: sleeps after ~15 min idle (first visitor waits a few seconds),
-and the database resets on every redeploy/restart (ephemeral filesystem). Fine
-for testing only.
-
-### Starter plan (live site — recommended, ≈ $7/mo + ≈ $0.25/mo disk)
-Same as above, plus: Plan `Starter`, **Advanced → Disks → Add Disk**
-(Name `sqlite-data`, Mount Path `/var/data`, Size 1 GB) and env var
-`DB_PATH=/var/data/bdjob.db`. Your database then survives restarts/redeploys.
-
-### After deploy
-Change the admin password (`admin` / `admin123`) immediately, paste AdSense in
-Admin → Settings, and submit `https://your-app.onrender.com/sitemap.xml` to
-Google Search Console. A `render.yaml` blueprint is included — it selects the
-Starter plan on purpose (disks need a paid plan).
 
 
